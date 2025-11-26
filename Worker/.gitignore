@@ -1,0 +1,16 @@
+# macOS
+.DS_Store
+
+# JetBrains IDEs
+.idea/
+
+# Python
+__pycache__/
+venv/
+
+# Unit testing
+.coverage
+coverage.lcov
+
+# Secrets
+secrets.py

@@ -1,0 +1,23 @@
+[run]
+source = src
+omit =
+    **/esp32_*.py
+    **/sht20_sensor.py
+    */libraries/*
+    */tests/*
+    */__pycache__/*
+    */venv/*
+    *.pyc
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    pass
+    raise ImportError
+fail_under = 65
+
+[html]
+directory = coverage_html

@@ -1,0 +1,29 @@
+{
+    "app.name"                                 : "ThermoHive",
+    "resources.devices"                        : "Devices",
+    "resources.devices.edit"                   : "Edit Device",
+    "resources.devices.details"                : "Device Details",
+    "resources.telemetry"                      : "Telemetry",
+    "labels.device.status"                     : "Status",
+    "labels.device.id"                         : "Device ID",
+    "labels.device.displayName"                : "Display Name",
+    "labels.device.mode"                       : "Operating Mode",
+    "labels.device.modes"                      : [
+        "Actuator",
+        "Sensor"
+    ],
+    "labels.device.modes.sensor"               : "Sensor",
+    "labels.device.modes.actuator"             : "Actuator",
+    "labels.device.lastSeen"                   : "Last Seen",
+    "labels.telemetry.deviceId"                : "Device ID",
+    "labels.telemetry.timestamp"               : "Timestamp",
+    "labels.telemetry.sensorType"              : "Sensor Type",
+    "labels.telemetry.sensorTypes.temperature" : "Temperature",
+    "labels.telemetry.sensorTypes.humidity"    : "Humidity",
+    "labels.telemetry.sensorTypes.battery"     : "Battery",
+    "labels.telemetry.value"                   : "Value",
+    "placeholders.notSet"                      : "(Not set)",
+    "errors.required"                          : "{{field}} is required.",
+    "actions.refresh"                          : "Refresh",
+    "actions.edit"                             : "Edit"
+}
