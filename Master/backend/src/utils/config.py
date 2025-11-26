@@ -1,4 +1,8 @@
+from os import path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+ENV_FILE : str = '/opt/thermohive/.env'
 
 
 class AppConfig(BaseSettings):
@@ -16,6 +20,6 @@ class AppConfig(BaseSettings):
     outbox_processing_interval  : int = 10
 
     model_config = SettingsConfigDict(
-        env_file='.env',
+        env_file=ENV_FILE if path.exists(ENV_FILE) else '.env',
         env_file_encoding='utf-8',
     )

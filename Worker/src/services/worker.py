@@ -34,7 +34,7 @@ class Worker:
         self.deepsleep              = deepsleep
 
         self.mode                   : str | None = None
-        self.sleep_interval         : int        = 0
+        self.sleep_interval         : int        = 300
         self.relay_toggle_requested : bool       = False
         self.target_relay_state     : int | None = None
 

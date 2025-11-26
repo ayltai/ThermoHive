@@ -15,7 +15,7 @@ export const dataProvider : DataProvider = {
             }
         }
 
-        const response = await fetch(`${API_ENDPOINT}/${resource}${query.size ? `?${camelCaseToSnakeCase(query.toString())}` : ''}`);
+        const response = await fetch(`${API_ENDPOINT}/${resource}${resource === 'devices' ? '/all' : ''}${query.size ? `?${camelCaseToSnakeCase(query.toString())}` : ''}`);
 
         if (response.ok) {
             const data = await response.json();

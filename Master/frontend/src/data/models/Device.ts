@@ -3,4 +3,5 @@ export type Device = {
     displayName? : string,
     mode?        : string,
     lastSeen     : string,
+    battery?     : number,
 };

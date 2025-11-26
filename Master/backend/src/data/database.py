@@ -1,10 +1,12 @@
 from sqlmodel import SQLModel
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession, create_async_engine
 
+from ..utils import AppConfig
 from .models import Settings
 from .repositories import SettingsRepository
 
-DATABASE_URL = "sqlite+aiosqlite:///database.db"
+app_config   = AppConfig()
+DATABASE_URL = 'sqlite+aiosqlite:////opt/thermohive/database.db' if app_config.environment == 'prod' else 'sqlite+aiosqlite:///database.db'
 
 engine = create_async_engine(DATABASE_URL, future=True)
 
@@ -24,7 +26,7 @@ async def init_settings():
         settings = Settings()
         repo     = SettingsRepository()
 
-        existing = repo.get(session, Settings.id == 1)
+        existing = await repo.get(session, Settings.id == 1)
         if not existing:
             settings.id                = 1
             settings.threshold_on      = 17.5

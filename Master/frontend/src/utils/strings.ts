@@ -23,3 +23,9 @@ export const snakeCaseToCamelCase = (obj : string | Record<string, any>) => {
 
     return result;
 };
+
+export const capitaliseFirstLetter = (str : string) : string => {
+    if (typeof str !== 'string' || str.length === 0) return str;
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
+};
