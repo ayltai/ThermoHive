@@ -29,3 +29,5 @@ export const capitaliseFirstLetter = (str : string) : string => {
 
     return str.charAt(0).toUpperCase() + str.slice(1);
 };
+
+export const formatMacAddress = (mac : string) : string => mac.toUpperCase().match(/.{1,2}/g)?.join('-') ?? mac;

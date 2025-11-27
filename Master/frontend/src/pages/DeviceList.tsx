@@ -7,7 +7,7 @@ import { formatDistanceToNow, intlFormat, } from 'date-fns';
 import { useTranslation, } from 'react-i18next';
 
 import type { Device, } from '../data/models';
-import { capitaliseFirstLetter, } from '../utils/strings';
+import { capitaliseFirstLetter, formatMacAddress, } from '../utils/strings';
 import { ResourceList, } from './ResourceList';
 
 export const DeviceList = () => {
@@ -29,11 +29,23 @@ export const DeviceList = () => {
                                 fontSize : 16,
                                 color    : '#f44336',
                             }} />
+                        ) : new Date().getTime() - new Date(value).getTime() > 60 * 60 * 1000 ? (
+                            <CheckCircleFilled style={{
+                                fontSize : 16,
+                                color    : '#ffeb3b',
+                            }} />
                         ) : (
                             <CheckCircleFilled style={{
                                 fontSize : 16,
                                 color    : '#4caf50',
                             }} />
+                        )} />
+                    <Table.Column<Device>
+                        width={200}
+                        dataIndex='id'
+                        title={t('labels.device.id')}
+                        render={(value) => (
+                            <Typography.Text>{formatMacAddress(value)}</Typography.Text>
                         )} />
                     <Table.Column<Device>
                         dataIndex='displayName'
@@ -51,7 +63,27 @@ export const DeviceList = () => {
                             );
                         }} />
                     <Table.Column<Device>
-                        width={120}
+                        width={140}
+                        dataIndex='temperature'
+                        title={t('labels.device.temperature')}
+                        align='center'
+                        render={(value : number) => value !== undefined ? (
+                            <Typography.Text>
+                                {value.toFixed(1)}°C
+                            </Typography.Text>
+                        ) : '-'} />
+                    <Table.Column<Device>
+                        width={140}
+                        dataIndex='humidity'
+                        title={t('labels.device.humidity')}
+                        align='center'
+                        render={(value : number) => value !== undefined ? (
+                            <Typography.Text>
+                                {value.toFixed(1)}%
+                            </Typography.Text>
+                        ) : '-'} />
+                    <Table.Column<Device>
+                        width={140}
                         dataIndex='battery'
                         title={t('labels.device.battery')}
                         align='center'
@@ -73,7 +105,7 @@ export const DeviceList = () => {
                                 color = '#ff9800';
                             }
 
-                            return value > 0 ? (
+                            return value >= 0 ? (
                                 <Tooltip title={`${value}%`}>
                                     <FontAwesomeIcon
                                         style={{
@@ -82,7 +114,7 @@ export const DeviceList = () => {
                                         }}
                                         icon={icon} />
                                 </Tooltip>
-                            ) : null;
+                            ) : '-';
                         }} />
                     <Table.Column<Device>
                         width={200}

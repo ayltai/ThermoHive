@@ -1,5 +1,5 @@
 run:
-	PYTHONPATH=. python src/main.py
+	PYTHONPATH=. python main.py
 
 venv:
 	python3 -m venv venv

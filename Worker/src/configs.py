@@ -4,6 +4,7 @@ TOPIC_DEVICE       : str = 'thermohive/control/device'
 TOPIC_REGISTRATION : str = 'thermohive/control/registration'
 TOPIC_TELEMETRY    : str = 'thermohive/control/telemetry'
 TOPIC_RELAY_STATE  : str = 'thermohive/control/relay'
+TOPIC_CRASH        : str = 'thermohive/internal/crash'
 
 LED_PIN : int = 8
 

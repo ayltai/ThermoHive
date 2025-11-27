@@ -34,7 +34,7 @@ export default defineConfig({
                 '.eslint.config.js',
             ],
             thresholds : {
-                statements : 60,
+                statements : 65,
             },
         },
         include     : [

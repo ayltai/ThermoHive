@@ -7,6 +7,8 @@
     "labels.device.status"                     : "Status",
     "labels.device.id"                         : "Device ID",
     "labels.device.displayName"                : "Display Name",
+    "labels.device.temperature"                : "Temperature",
+    "labels.device.humidity"                   : "Humidity",
     "labels.device.battery"                    : "Battery Level",
     "labels.device.mode"                       : "Operating Mode",
     "labels.device.modes"                      : [
@@ -17,6 +19,7 @@
     "labels.device.modes.actuator"             : "Actuator",
     "labels.device.lastSeen"                   : "Last Seen",
     "labels.telemetry.deviceId"                : "Device ID",
+    "labels.telemetry.deviceDisplayName"       : "Display Name",
     "labels.telemetry.timestamp"               : "Timestamp",
     "labels.telemetry.sensorType"              : "Sensor Type",
     "labels.telemetry.sensorTypes.temperature" : "Temperature",

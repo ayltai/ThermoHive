@@ -23,7 +23,7 @@ class MQTTManager(BaseMQTTManager):
             return self._connect_mqtt()
 
     def _connect_mqtt(self) -> bool:
-        if not self.wifi_manager.ensure_wifi():
+        if not self.wifi_manager.ensure_wifi_on():
             return False
 
         try:
@@ -39,12 +39,12 @@ class MQTTManager(BaseMQTTManager):
 
             return False
 
-    def publish(self, topic: str, msg: str):
+    def publish(self, topic: str, msg: str, retain: bool = False) -> None:
         if not self._ensure_mqtt():
             return
 
         try:
-            self.client.publish(topic, msg, qos=1)
+            self.client.publish(topic, msg, qos=1, retain=retain)
         # pylint: disable=broad-exception-caught
         except Exception as e:
             log_error(e)

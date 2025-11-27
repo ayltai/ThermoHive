@@ -25,5 +25,5 @@ class BaseMQTTManager:
         pass
 
     # pylint: disable=unused-argument
-    def publish(self, topic: str, msg: str):
+    def publish(self, topic: str, msg: str, retain: bool = False) -> None:
         pass

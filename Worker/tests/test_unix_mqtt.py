@@ -19,10 +19,10 @@ def test_connect_and_publish():
         manager.publish('topic', 'msg')
 
         mock_client.connect.assert_called_with('localhost', 1883, keepalive=60)
-        mock_client.publish.assert_called_with('topic', 'msg', qos=1)
+        mock_client.publish.assert_called_with('topic', 'msg', qos=1, retain=False)
 
         mock_client.is_connected.return_value = True
 
         manager.publish('topic2', 'msg2')
 
-        mock_client.publish.assert_called_with('topic2', 'msg2', qos=1)
+        mock_client.publish.assert_called_with('topic2', 'msg2', qos=1, retain=False)

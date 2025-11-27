@@ -41,14 +41,18 @@ class DeviceRouter(BaseRouter):
             telemetry_repo         = TelemetryRepository()
 
             for device in devices:
-                telemetry = await telemetry_repo.get_latest_for_device(session, device.id, 'battery')
+                temperature = await telemetry_repo.get_latest_for_device(session, device.id, 'temperature')
+                humidity    = await telemetry_repo.get_latest_for_device(session, device.id, 'humidity')
+                battery     = await telemetry_repo.get_latest_for_device(session, device.id, 'battery')
 
                 devices_with_telemetry.append({
                     'id'           : device.id,
                     'display_name' : device.display_name,
                     'mode'         : device.mode,
                     'last_seen'    : device.last_seen,
-                    'battery'      : telemetry.value if telemetry else None,
+                    'temperature'  : temperature.value if temperature else None,
+                    'humidity'     : humidity.value if humidity else None,
+                    'battery'      : battery.value if battery else None,
                 })
 
             return devices_with_telemetry

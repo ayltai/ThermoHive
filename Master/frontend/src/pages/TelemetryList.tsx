@@ -4,6 +4,7 @@ import { intlFormat, } from 'date-fns';
 import { useTranslation, } from 'react-i18next';
 
 import type { Device, Telemetry, } from '../data/models';
+import { formatMacAddress, } from '../utils/strings';
 import { ResourceList, } from './ResourceList';
 
 export const TelemetryList = () => {
@@ -20,8 +21,15 @@ export const TelemetryList = () => {
             {() => (
                 <>
                     <Table.Column<Telemetry>
+                        width={200}
                         dataIndex='deviceId'
                         title={t('labels.telemetry.deviceId')}
+                        render={value => (
+                            <Typography.Text>{formatMacAddress(value)}</Typography.Text>
+                        )} />
+                    <Table.Column<Telemetry>
+                        dataIndex='deviceId'
+                        title={t('labels.telemetry.deviceDisplayName')}
                         render={(value : string) => {
                             const handleClick = () => show('devices', value);
 
@@ -34,7 +42,7 @@ export const TelemetryList = () => {
                             );
                         }} />
                     <Table.Column<Telemetry>
-                        width={240}
+                        width={200}
                         dataIndex='sensorType'
                         title={t('labels.telemetry.sensorType')}
                         render={(value : string) => (
@@ -57,12 +65,12 @@ export const TelemetryList = () => {
                             </>
                         )} />
                     <Table.Column<Telemetry>
-                        width={80}
+                        width={100}
                         dataIndex='value'
                         title={t('labels.telemetry.value')}
                         render={value => (
                             <Typography.Text>
-                                {value ? value.toFixed(1) : '-'}
+                                {value === undefined ? '-' : value.toFixed(1)}
                             </Typography.Text>
                         )} />
                     <Table.Column<Telemetry>

@@ -1,4 +1,5 @@
 from asyncio import create_task, gather, Queue, sleep
+from uuid import getnode
 
 from datetime import datetime, timezone
 from json import dumps, JSONDecodeError, loads
@@ -27,7 +28,7 @@ class MQTTManager:
 
             log_debug(f"Publishing configuration for device {device_id} in mode: {payload['mode']}")
 
-            async with Client(self.config.mqtt_broker_host, self.config.mqtt_broker_port, identifier='processor') as client:
+            async with Client(self.config.mqtt_broker_host, self.config.mqtt_broker_port, identifier=f'processor-{hex(getnode())}') as client:
                 await client.publish(f"{self.config.topic_device}/{device_id}", dumps(configuration), qos=1, retain=True)
         # pylint: disable=broad-exception-caught
         except Exception as e:
@@ -40,6 +41,8 @@ class MQTTManager:
             async with async_session() as session:
                 device = await self.device_repo.get(session, Device.id == device_id)
                 if device:
+                    device.last_seen=datetime.now(timezone.utc)
+
                     await self.device_repo.update(session, device, last_seen=datetime.now(timezone.utc))
                 else:
                     device = Device()
@@ -95,16 +98,19 @@ class MQTTManager:
                 await self._handle_registration(device_id)
             elif message_type == 'telemetry':
                 await self._handle_telemetry(device_id, payload)
+            elif message_type == 'crash':
+                log_debug(f'Received crash report from device {device_id}: {payload}')
 
             self.queue.task_done()
 
     async def _mqtt_worker(self) -> None:
         while True:
             try:
-                async with Client(self.config.mqtt_broker_host, self.config.mqtt_broker_port, identifier='worker') as client:
+                async with Client(self.config.mqtt_broker_host, self.config.mqtt_broker_port, identifier=f'worker-{hex(getnode())}') as client:
                     await client.subscribe(f'{self.config.topic_configuration}/+')
                     await client.subscribe(f'{self.config.topic_registration}/+')
                     await client.subscribe(f'{self.config.topic_telemetry}/+')
+                    await client.subscribe(f'{self.config.topic_crash_report}/+')
 
                     async for message in client.messages:
                         log_debug(f'Received MQTT message on topic {message.topic}')

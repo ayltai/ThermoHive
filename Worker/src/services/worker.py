@@ -2,7 +2,7 @@ from json import dumps
 from time import time, sleep
 
 from src.data import BaseStorage
-from src.networks import BaseWiFiManager
+from src.networks import BaseBluetoothManager, BaseWiFiManager
 from src.sensors import BaseSensor
 from src.services.base_mqtt import BaseMQTTManager
 from src.utils import log_debug
@@ -13,17 +13,18 @@ MODES = [
     'sensor',
 ]
 
-DEADLINE = 60
+DEADLINE = 120
 
 
 class Worker:
     def __init__(
         self,
-        device_id    : str,
-        sensors      : list[BaseSensor],
-        storage      : BaseStorage,
-        wifi_manager : BaseWiFiManager,
-        mqtt_manager : BaseMQTTManager,
+        device_id         : str,
+        sensors           : list[BaseSensor],
+        storage           : BaseStorage,
+        bluetooth_manager : BaseBluetoothManager,
+        wifi_manager      : BaseWiFiManager,
+        mqtt_manager      : BaseMQTTManager,
         deepsleep
     ) -> None:
         self.device_id              = device_id
@@ -39,6 +40,8 @@ class Worker:
         self.target_relay_state     : int | None = None
 
         self.mqtt_manager.set_on_callback(self._on_mqtt_message)
+
+        bluetooth_manager.ensure_bluetooth_disabled()
 
     def _on_mqtt_message(self, topic: str, payload: dict) -> None:
         log_debug(f'Received MQTT message on topic {topic}:\n{dumps(payload)}')
@@ -121,6 +124,8 @@ class Worker:
         elif 'actuator' in self.mode:
             if self.relay_toggle_requested:
                 self.toggle_relay()
+
+        self.wifi_manager.ensure_wifi_off()
 
         log_debug(f'Deepsleeping for {self.sleep_interval} seconds...')
         self.deepsleep(self.sleep_interval * 1000)

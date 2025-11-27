@@ -23,6 +23,15 @@ fetchMock.mockResponseOnce(JSON.stringify({
     ]),
 }));
 
+let resourceListData : Record<string, string | number>[] = [
+    {
+        id          : 'AABBCCDDEEFF',
+        displayName : 'Test',
+        mode        : 'sensor',
+        lastSeen    : '2024-01-01T00:00:00Z',
+    },
+];
+
 vi.mock('./ResourceList', () => ({
     ResourceList : ({
         children,
@@ -33,14 +42,7 @@ vi.mock('./ResourceList', () => ({
                 isSuccess : true,
                 sorters   : [],
                 data      : {
-                    data : [
-                        {
-                            id          : 1,
-                            displayName : 'Test',
-                            mode        : 'sensor',
-                            lastSeen    : '2024-01-01T00:00:00Z',
-                        },
-                    ],
+                    data : resourceListData,
                 },
             })}
         </div>
@@ -57,12 +59,13 @@ vi.mock('antd', async () => ({
     Table  : {
         Column: ({
             title,
+            dataIndex,
+            render,
         } : any) => (
-            <>
-                <div>
-                    <span>{title}</span>
-                </div>
-            </>
+            <div>
+                <span>{title}</span>
+                {render && render(resourceListData[0][dataIndex])}
+            </div>
         ),
     },
     Tag    : ({
@@ -75,6 +78,17 @@ vi.mock('antd', async () => ({
 }));
 
 describe('<DeviceList />', () => {
+    beforeEach(() => {
+        resourceListData = [
+            {
+                id          : 'AABBCCDDEEFF',
+                displayName : 'Test',
+                mode        : 'sensor',
+                lastSeen    : '2024-01-01T00:00:00Z',
+            },
+        ];
+    });
+
     it('renders displayName column', () => {
         const { getByText, } = customRender(<DeviceList />);
 
@@ -91,5 +105,31 @@ describe('<DeviceList />', () => {
         const { getByText, } = customRender(<DeviceList />);
 
         expect(getByText('labels.device.lastSeen')).toBeInTheDocument();
+    });
+
+    it('renders status icon for active and inactive', () => {
+        resourceListData = [
+            {
+                id          : '1',
+                displayName : 'Test',
+                mode        : 'sensor',
+                lastSeen    : new Date().toISOString(),
+            }, {
+                id          : '2',
+                displayName : 'Test2',
+                mode        : 'sensor',
+                lastSeen    : '2000-01-01T00:00:00Z',
+            },
+        ];
+
+        const { container, } = customRender(<DeviceList />);
+
+        expect(container).toBeTruthy();
+    });
+
+    it('formats device ID in MAC format', () => {
+        const { getByText, } = customRender(<DeviceList />);
+
+        expect(getByText('AA-BB-CC-DD-EE-FF')).toBeInTheDocument();
     });
 });

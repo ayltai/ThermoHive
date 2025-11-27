@@ -3,6 +3,7 @@ from pytest import fixture
 from unittest.mock import MagicMock
 
 from src.data import BaseStorage
+from src.networks.dummy_bluetooth import BluetoothManager
 from src.networks.dummy_wifi import WiFiManager
 from src.sensors import BaseSensor
 from src.services import BaseMQTTManager
@@ -50,6 +51,7 @@ def worker():
         device_id='dev1',
         sensors=[DummySensor()],
         storage=DummyStorage(),
+        bluetooth_manager=BluetoothManager(),
         wifi_manager=wifi_manager,
         mqtt_manager=DummyMQTT('dev1', 'mqtt://test'),
         deepsleep=MagicMock()

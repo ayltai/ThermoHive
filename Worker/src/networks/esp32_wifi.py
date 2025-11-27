@@ -14,7 +14,7 @@ class WiFiManager(BaseWiFiManager):
     def __init__(self):
         self.wlan = WLAN(STA_IF)
 
-    def ensure_wifi(self) -> bool:
+    def ensure_wifi_on(self) -> bool:
         self.wlan.active(True)
 
         if not self.wlan.isconnected():
@@ -29,3 +29,9 @@ class WiFiManager(BaseWiFiManager):
 
         log_debug(f'WiFi connected: {self.wlan.ifconfig()}')
         return self.wlan.isconnected()
+
+    def ensure_wifi_off(self) -> bool:
+        self.wlan.active(False)
+        log_debug('WiFi turned off')
+
+        return not self.wlan.isconnected()

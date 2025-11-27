@@ -38,8 +38,8 @@ class MQTTManager(BaseMQTTManager):
 
         return True
 
-    def publish(self, topic: str, msg: str):
+    def publish(self, topic: str, msg: str, retain: bool = False) -> None:
         if not self._ensure_mqtt():
             return
 
-        self.client.publish(topic, msg, qos=1)
+        self.client.publish(topic, msg, qos=1, retain=retain)
