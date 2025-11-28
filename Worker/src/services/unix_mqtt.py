@@ -3,12 +3,13 @@ from paho.mqtt.client import Client
 from src.configs import TOPIC_DEVICE, TOPIC_RELAY_STATE
 from src.networks import BaseWiFiManager
 from src.services.base_mqtt import BaseMQTTManager
-from src.utils import log_debug
+from src.utils.base import BaseWatchdog
+from src.utils.logging import log_debug
 
 
 class MQTTManager(BaseMQTTManager):
-    def __init__(self, wifi_manager: BaseWiFiManager, device_id: str, server: str, port: int = 1883) -> None:
-        super().__init__(wifi_manager, device_id, server, port)
+    def __init__(self, wifi_manager: BaseWiFiManager, watchdog: BaseWatchdog, device_id: str, server: str, port: int = 1883) -> None:
+        super().__init__(wifi_manager, watchdog, device_id, server, port)
 
         self.client = Client(client_id=device_id, clean_session=False, reconnect_on_failure=True)
 

@@ -1,13 +1,15 @@
 from json import loads
 
-from src.networks import BaseWiFiManager
+from src.networks.base_wifi import BaseWiFiManager
+from src.utils.base import BaseWatchdog
 
 
 class BaseMQTTManager:
-    def __init__(self, wifi_manager: BaseWiFiManager, device_id: str, server: str, port: int = 1883):
+    def __init__(self, wifi_manager: BaseWiFiManager, watchdog: BaseWatchdog, device_id: str, server: str, port: int = 1883):
         self.server       = server
         self.port         = port
         self.wifi_manager = wifi_manager
+        self.watchdog     = watchdog
         self.device_id    = device_id
         self.on_callback  = None
 

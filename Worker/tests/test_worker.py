@@ -8,8 +8,10 @@ from src.networks.dummy_wifi import WiFiManager
 from src.sensors import BaseSensor
 from src.services import BaseMQTTManager
 from src.services.worker import Worker
+from src.utils.dummy_watchdog import Watchdog
 
-wifi_manager = WiFiManager()
+watchdog     = Watchdog()
+wifi_manager = WiFiManager(watchdog)
 
 
 class DummySensor(BaseSensor):
@@ -33,7 +35,7 @@ class DummyStorage(BaseStorage):
 
 class DummyMQTT(BaseMQTTManager):
     def __init__(self, device_id: str, server: str):
-        super().__init__(wifi_manager, device_id, server)
+        super().__init__(wifi_manager, watchdog, device_id, server)
 
         self.published = []
         self.callback  = None
@@ -41,7 +43,7 @@ class DummyMQTT(BaseMQTTManager):
     def set_on_callback(self, cb):
         self.callback = cb
 
-    def publish(self, topic, msg):
+    def publish(self, topic, msg, retain=False):
         self.published.append((topic, msg))
 
 
@@ -54,6 +56,7 @@ def worker():
         bluetooth_manager=BluetoothManager(),
         wifi_manager=wifi_manager,
         mqtt_manager=DummyMQTT('dev1', 'mqtt://test'),
+        watchdog=watchdog,
         deepsleep=MagicMock()
     )
 

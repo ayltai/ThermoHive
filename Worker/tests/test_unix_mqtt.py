@@ -2,13 +2,15 @@ from unittest.mock import MagicMock, patch
 
 from src.networks.dummy_wifi import WiFiManager
 from src.services.unix_mqtt import MQTTManager
+from src.utils.dummy_watchdog import Watchdog
 
 def test_connect_and_publish():
     with patch('src.services.unix_mqtt.Client') as MockClient:
         mock_client = MagicMock()
         MockClient.return_value = mock_client
 
-        manager = MQTTManager(WiFiManager(), 'dev1', 'localhost', 1883)
+        watchdog = Watchdog()
+        manager  = MQTTManager(WiFiManager(watchdog), watchdog=watchdog, device_id='dev1', server='localhost', port=1883)
 
         mock_client.is_connected.return_value = False
         mock_client.connect.return_value      = None

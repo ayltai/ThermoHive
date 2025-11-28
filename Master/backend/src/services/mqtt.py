@@ -41,7 +41,7 @@ class MQTTManager:
             async with async_session() as session:
                 device = await self.device_repo.get(session, Device.id == device_id)
                 if device:
-                    device.last_seen=datetime.now(timezone.utc)
+                    device.last_seen = datetime.now(timezone.utc)
 
                     await self.device_repo.update(session, device, last_seen=datetime.now(timezone.utc))
                 else:

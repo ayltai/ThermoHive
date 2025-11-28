@@ -18,6 +18,7 @@ class AppConfig(BaseSettings):
     topic_crash_report          : str
     device_sleep_interval       : int = 600
     heating_evaluation_interval : int = 10
+    heating_evaluation_strategy : str = 'min'
     outbox_processing_interval  : int = 10
 
     model_config = SettingsConfigDict(

@@ -2,7 +2,7 @@ import { CloseCircleFilled, CheckCircleFilled, } from '@ant-design/icons';
 import { faBatteryEmpty, faBatteryFull, faBatteryHalf, faBatteryQuarter, faBatteryThreeQuarters, } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon, } from '@fortawesome/react-fontawesome';
 import { useNavigation, } from '@refinedev/core';
-import { Button, Table, Tag, Tooltip, Typography, } from 'antd';
+import { Button, Space, Table, Tag, Tooltip, Typography, } from 'antd';
 import { formatDistanceToNow, intlFormat, } from 'date-fns';
 import { useTranslation, } from 'react-i18next';
 
@@ -20,7 +20,7 @@ export const DeviceList = () => {
             {() => (
                 <>
                     <Table.Column<Device>
-                        width={80}
+                        width={100}
                         dataIndex='lastSeen'
                         title={t('labels.device.status')}
                         align='center'
@@ -29,7 +29,7 @@ export const DeviceList = () => {
                                 fontSize : 16,
                                 color    : '#f44336',
                             }} />
-                        ) : new Date().getTime() - new Date(value).getTime() > 60 * 60 * 1000 ? (
+                        ) : new Date().getTime() - new Date(value).getTime() > 20 * 60 * 1000 ? (
                             <CheckCircleFilled style={{
                                 fontSize : 16,
                                 color    : '#ffeb3b',
@@ -45,7 +45,11 @@ export const DeviceList = () => {
                         dataIndex='id'
                         title={t('labels.device.id')}
                         render={(value) => (
-                            <Typography.Text>{formatMacAddress(value)}</Typography.Text>
+                            <Typography.Text style={{
+                                fontFamily : 'monospace',
+                            }}>
+                                {formatMacAddress(value)}
+                            </Typography.Text>
                         )} />
                     <Table.Column<Device>
                         dataIndex='displayName'
@@ -63,7 +67,7 @@ export const DeviceList = () => {
                             );
                         }} />
                     <Table.Column<Device>
-                        width={140}
+                        width={150}
                         dataIndex='temperature'
                         title={t('labels.device.temperature')}
                         align='center'
@@ -83,7 +87,7 @@ export const DeviceList = () => {
                             </Typography.Text>
                         ) : '-'} />
                     <Table.Column<Device>
-                        width={140}
+                        width={150}
                         dataIndex='battery'
                         title={t('labels.device.battery')}
                         align='center'
@@ -106,18 +110,21 @@ export const DeviceList = () => {
                             }
 
                             return value >= 0 ? (
-                                <Tooltip title={`${value}%`}>
-                                    <FontAwesomeIcon
-                                        style={{
-                                            color,
-                                            fontSize : 16,
-                                        }}
-                                        icon={icon} />
-                                </Tooltip>
+                                <Space>
+                                    <Tooltip title={`${value.toFixed(1)}%`}>
+                                        <FontAwesomeIcon
+                                            style={{
+                                                color,
+                                                fontSize : 16,
+                                            }}
+                                            icon={icon} />
+                                    </Tooltip>
+                                    <Typography.Text>{value.toFixed(1)}</Typography.Text>
+                                </Space>
                             ) : '-';
                         }} />
                     <Table.Column<Device>
-                        width={200}
+                        width={180}
                         dataIndex='mode'
                         title={t('labels.device.mode')}
                         render={(value : string) => (

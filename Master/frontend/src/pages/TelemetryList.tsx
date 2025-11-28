@@ -25,7 +25,11 @@ export const TelemetryList = () => {
                         dataIndex='deviceId'
                         title={t('labels.telemetry.deviceId')}
                         render={value => (
-                            <Typography.Text>{formatMacAddress(value)}</Typography.Text>
+                            <Typography.Text style={{
+                                fontFamily : 'monospace',
+                            }}>
+                                {formatMacAddress(value)}
+                            </Typography.Text>
                         )} />
                     <Table.Column<Telemetry>
                         dataIndex='deviceId'
@@ -65,7 +69,7 @@ export const TelemetryList = () => {
                             </>
                         )} />
                     <Table.Column<Telemetry>
-                        width={100}
+                        width={150}
                         dataIndex='value'
                         title={t('labels.telemetry.value')}
                         render={value => (
