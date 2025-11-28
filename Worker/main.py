@@ -1,6 +1,7 @@
 from src import configs, secrets
 from src.networks import BaseWiFiManager
 from src.services import Worker
+from src.utils.base import BaseWatchdog
 from src.utils.logging import log_crash
 
 if configs.ENVIRONMENT == 'unix':
@@ -11,6 +12,7 @@ if configs.ENVIRONMENT == 'unix':
     from src.networks.dummy_wifi import WiFiManager
     from src.sensors.dummy_sensor import DummySensor
     from src.services.unix_mqtt import MQTTManager
+    from src.utils.dummy_watchdog import Watchdog
 
     sensors   : list[DummySensor] = [DummySensor()]
     device_id : bytes             = b'TEST_DEVICE_1234'
@@ -29,6 +31,7 @@ elif configs.ENVIRONMENT == 'esp32':
     from src.sensors.sht20_sensor import SHT20Sensor
     from src.sensors.voltage_sensor import VoltageSensor
     from src.services.esp32_mqtt import MQTTManager
+    from src.utils.esp32_watchdog import Watchdog
 
     Pin(configs.LED_PIN, Pin.OUT).value(0)
 
@@ -53,8 +56,9 @@ else:
 
 # pylint: disable=invalid-name
 id           : str             = ''.join(f'{b:02x}' for b in device_id)
-wifi_manager : BaseWiFiManager = WiFiManager()
-mqtt_manager : MQTTManager     = MQTTManager(wifi_manager, id, secrets.MQTT_BROKER, secrets.MQTT_PORT)
+watchdog     : BaseWatchdog    = Watchdog()
+wifi_manager : BaseWiFiManager = WiFiManager(watchdog)
+mqtt_manager : MQTTManager     = MQTTManager(wifi_manager, watchdog, id, secrets.MQTT_BROKER, secrets.MQTT_PORT)
 
 print(f'Starting device with ID: {id}')
 
@@ -66,6 +70,7 @@ try:
         bluetooth_manager=BluetoothManager(),
         wifi_manager=wifi_manager,
         mqtt_manager=mqtt_manager,
+        watchdog=watchdog,
         deepsleep=sleep
     ).run()
 except Exception as e:

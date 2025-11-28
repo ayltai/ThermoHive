@@ -1,11 +1,12 @@
 from json import dumps
-from time import time, sleep
+from time import sleep, time
 
 from src.data import BaseStorage
 from src.networks import BaseBluetoothManager, BaseWiFiManager
 from src.sensors import BaseSensor
 from src.services.base_mqtt import BaseMQTTManager
-from src.utils import log_debug
+from src.utils.base import BaseWatchdog
+from src.utils.logging import log_debug
 from src import configs
 
 MODES = [
@@ -25,6 +26,7 @@ class Worker:
         bluetooth_manager : BaseBluetoothManager,
         wifi_manager      : BaseWiFiManager,
         mqtt_manager      : BaseMQTTManager,
+        watchdog          : BaseWatchdog,
         deepsleep
     ) -> None:
         self.device_id              = device_id
@@ -32,6 +34,7 @@ class Worker:
         self.storage                = storage
         self.wifi_manager           = wifi_manager
         self.mqtt_manager           = mqtt_manager
+        self.watchdog               = watchdog
         self.deepsleep              = deepsleep
 
         self.mode                   : str | None = None
@@ -107,10 +110,14 @@ class Worker:
     def run(self) -> None:
         self.register()
 
+        self.watchdog.feed()
+
         deadline = time() + DEADLINE
         while time() < deadline:
             if self.mode:
                 break
+
+            self.watchdog.feed()
 
             sleep(1)
 
@@ -124,6 +131,8 @@ class Worker:
         elif 'actuator' in self.mode:
             if self.relay_toggle_requested:
                 self.toggle_relay()
+
+        self.watchdog.feed()
 
         self.wifi_manager.ensure_wifi_off()
 

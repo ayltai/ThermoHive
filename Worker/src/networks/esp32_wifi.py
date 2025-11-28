@@ -5,13 +5,16 @@ from time import sleep
 
 from src.secrets import WIFI_PASSWORD, WIFI_SSID
 from src.networks.base_wifi import BaseWiFiManager
+from src.utils.base import BaseWatchdog
 from src.utils.logging import log_debug
 
 TIMEOUT: int = 30
 
 
 class WiFiManager(BaseWiFiManager):
-    def __init__(self):
+    def __init__(self, watchdog: BaseWatchdog) -> None:
+        super().__init__(watchdog)
+
         self.wlan = WLAN(STA_IF)
 
     def ensure_wifi_on(self) -> bool:
@@ -23,6 +26,8 @@ class WiFiManager(BaseWiFiManager):
 
             timeout: int = 0
             while not self.wlan.isconnected() and timeout < TIMEOUT:
+                self.watchdog.feed()
+
                 sleep(1)
 
                 timeout += 1
