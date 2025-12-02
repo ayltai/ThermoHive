@@ -6,7 +6,7 @@ class BaseWiFiManager:
         self.watchdog = watchdog
 
     def ensure_wifi_on(self) -> bool:
-        return True
+        pass
 
     def ensure_wifi_off(self) -> bool:
         pass

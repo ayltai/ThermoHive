@@ -14,7 +14,8 @@ MODES = [
     'sensor',
 ]
 
-DEADLINE = 120
+DEADLINE       : int = 20
+SLEEP_INTERVAL : int = 300
 
 
 class Worker:
@@ -29,16 +30,16 @@ class Worker:
         watchdog          : BaseWatchdog,
         deepsleep
     ) -> None:
-        self.device_id              = device_id
-        self.sensors                = sensors
-        self.storage                = storage
-        self.wifi_manager           = wifi_manager
-        self.mqtt_manager           = mqtt_manager
-        self.watchdog               = watchdog
-        self.deepsleep              = deepsleep
+        self.device_id    = device_id
+        self.sensors      = sensors
+        self.storage      = storage
+        self.wifi_manager = wifi_manager
+        self.mqtt_manager = mqtt_manager
+        self.watchdog     = watchdog
+        self.deepsleep    = deepsleep
 
         self.mode                   : str | None = None
-        self.sleep_interval         : int        = 300
+        self.sleep_interval         : int        = SLEEP_INTERVAL
         self.relay_toggle_requested : bool       = False
         self.target_relay_state     : int | None = None
 

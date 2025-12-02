@@ -1,3 +1,5 @@
+from json import dumps
+
 from src.configs import TOPIC_CRASH
 from src.services.base_mqtt import BaseMQTTManager
 
@@ -13,4 +15,7 @@ def log_error(e: Exception) -> None:
 
 
 def log_crash(e: Exception, device_id: str, mqtt_manager: BaseMQTTManager) -> None:
-    mqtt_manager.publish(f'{TOPIC_CRASH}/{device_id}', f'{type(e).__name__}: {e}', retain=True)
+    mqtt_manager.publish(f'{TOPIC_CRASH}/{device_id}', dumps({
+        'error_type'    : type(e).__name__,
+        'error_message' : str(e),
+    }), retain=True)

@@ -1,9 +1,3 @@
-# macOS
-.DS_Store
-
-# JetBrains IDEs
-.idea/
-
 # Python
 __pycache__/
 venv/

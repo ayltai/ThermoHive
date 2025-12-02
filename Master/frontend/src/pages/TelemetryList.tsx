@@ -72,6 +72,7 @@ export const TelemetryList = () => {
                         width={150}
                         dataIndex='value'
                         title={t('labels.telemetry.value')}
+                        align='end'
                         render={value => (
                             <Typography.Text>
                                 {value === undefined ? '-' : value.toFixed(1)}

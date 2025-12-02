@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..data.models import Device
 from ..data.repositories import DeviceRepository, TelemetryRepository
-from ..utils.config import AppConfig
+from ..utils import AppConfig
 from .base import BaseRouter
 
 

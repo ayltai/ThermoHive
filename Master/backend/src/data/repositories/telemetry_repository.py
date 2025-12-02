@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlmodel import and_
 
 from ..models import Telemetry
-from .base import AsyncRepository, T
+from .base import AsyncRepository
 
 
 class TelemetryRepository(AsyncRepository[Telemetry]):
@@ -17,7 +17,7 @@ class TelemetryRepository(AsyncRepository[Telemetry]):
         results = await self.list(session, and_(Telemetry.device_id == device_id, Telemetry.sensor_type == sensor_type), order_by=Telemetry.timestamp.desc(), limit=1)
         return results[0] if results else None
 
-    async def list(self, session: AsyncSession, *conditions: ColumnElement[bool], offset: Optional[int] = None, order_by=None, limit: Optional[int] = None) -> Sequence[T]:
+    async def list(self, session: AsyncSession, *conditions: ColumnElement[bool], offset: Optional[int] = None, order_by=None, limit: Optional[int] = None) -> Sequence[Telemetry]:
         if order_by is None:
             # pylint: disable=no-member
             order_by = Telemetry.timestamp.desc()

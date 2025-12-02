@@ -70,7 +70,7 @@ export const DeviceList = () => {
                         width={150}
                         dataIndex='temperature'
                         title={t('labels.device.temperature')}
-                        align='center'
+                        align='end'
                         render={(value : number) => value !== undefined ? (
                             <Typography.Text>
                                 {value.toFixed(1)}°C
@@ -80,7 +80,7 @@ export const DeviceList = () => {
                         width={140}
                         dataIndex='humidity'
                         title={t('labels.device.humidity')}
-                        align='center'
+                        align='end'
                         render={(value : number) => value !== undefined ? (
                             <Typography.Text>
                                 {value.toFixed(1)}%
@@ -90,7 +90,7 @@ export const DeviceList = () => {
                         width={150}
                         dataIndex='battery'
                         title={t('labels.device.battery')}
-                        align='center'
+                        align='end'
                         render={(value : number) => {
                             let icon  = faBatteryEmpty;
                             let color = '#f44336';
@@ -111,6 +111,7 @@ export const DeviceList = () => {
 
                             return value >= 0 ? (
                                 <Space>
+                                    <Typography.Text>{`${value.toFixed(1)}%`}</Typography.Text>
                                     <Tooltip title={`${value.toFixed(1)}%`}>
                                         <FontAwesomeIcon
                                             style={{
@@ -119,7 +120,6 @@ export const DeviceList = () => {
                                             }}
                                             icon={icon} />
                                     </Tooltip>
-                                    <Typography.Text>{value.toFixed(1)}</Typography.Text>
                                 </Space>
                             ) : '-';
                         }} />

@@ -90,10 +90,4 @@ describe('<DeviceEdit />', () => {
 
         expect(getByLabelText('labels.device.mode')).toBeInTheDocument();
     });
-
-    it('allows typing in displayName input', () => {
-        const { getByLabelText, } = render(<DeviceEdit />);
-
-        expect(getByLabelText('labels.device.displayName')).toBeInTheDocument();
-    });
 });

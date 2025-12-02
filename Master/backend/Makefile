@@ -1,5 +1,5 @@
 dev:
-	python -m fastapi dev src/main.py --host=0.0.0.0
+	ENVIRONMENT=dev python -m fastapi dev src/main.py --host=0.0.0.0
 
 prod:
 	uvicorn src.main:app --host 0.0.0.0
@@ -36,4 +36,4 @@ pylint:
 	pylint --recursive=y --fail-under=9.5 src
 
 test:
-	pytest --cov=src --cov-report=term --cov-report=lcov
+	ENVIRONMENT=dev pytest --cov=src --cov-report=term --cov-report=lcov

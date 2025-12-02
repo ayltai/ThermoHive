@@ -9,7 +9,7 @@ from src.services.base_mqtt import BaseMQTTManager
 from src.utils.base import BaseWatchdog
 from src.utils.logging import log_error
 
-DEADLINE = 120
+DEADLINE = 20
 
 
 class MQTTManager(BaseMQTTManager):

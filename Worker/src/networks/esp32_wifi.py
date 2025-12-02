@@ -8,7 +8,7 @@ from src.networks.base_wifi import BaseWiFiManager
 from src.utils.base import BaseWatchdog
 from src.utils.logging import log_debug
 
-TIMEOUT: int = 30
+TIMEOUT: int = 20
 
 
 class WiFiManager(BaseWiFiManager):

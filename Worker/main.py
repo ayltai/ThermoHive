@@ -1,8 +1,9 @@
-from src import configs, secrets
 from src.networks import BaseWiFiManager
+from src.sensors import BaseSensor
 from src.services import Worker
 from src.utils.base import BaseWatchdog
 from src.utils.logging import log_crash
+from src import configs, secrets
 
 if configs.ENVIRONMENT == 'unix':
     from sys import exit
@@ -14,7 +15,7 @@ if configs.ENVIRONMENT == 'unix':
     from src.services.unix_mqtt import MQTTManager
     from src.utils.dummy_watchdog import Watchdog
 
-    sensors   : list[DummySensor] = [DummySensor()]
+    sensors   : list[BaseSensor] = [DummySensor()]
     device_id : bytes             = b'TEST_DEVICE_1234'
 
     def sleep(_: int | None) -> None:
@@ -40,7 +41,7 @@ elif configs.ENVIRONMENT == 'esp32':
 
     stop()
 
-    sensors : list[SHT20Sensor] = [
+    sensors : list[BaseSensor] = [
         SHT20Sensor(),
         VoltageSensor(),
     ]

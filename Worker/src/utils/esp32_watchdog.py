@@ -5,6 +5,7 @@ from src.utils.base import BaseWatchdog
 
 WATCHDOG_TIMEOUT_MS : int = 15000
 
+# pylint: disable=invalid-name
 watchdog : WDT | None = None
 
 
